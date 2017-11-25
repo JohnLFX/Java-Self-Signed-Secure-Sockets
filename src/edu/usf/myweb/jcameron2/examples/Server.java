@@ -13,6 +13,8 @@ import java.security.SecureRandom;
 
 public class Server {
 
+    private static final String CLIENT_HOST_ADDRESS = "0.0.0.0";
+
     public static void main(String[] args) throws Exception {
 
         //System.setProperty("javax.net.debug", "ssl,handshake");
@@ -40,6 +42,21 @@ public class Server {
                     "Server CA",
                     caKeyStorePath,
                     keyStorePath
+            );
+
+        }
+
+        File clientKeyStorePath = new File(CLIENT_HOST_ADDRESS + ".keystore");
+
+        if (!clientKeyStorePath.exists()) {
+
+            System.out.println("Generating client certificate for " + CLIENT_HOST_ADDRESS + "...");
+
+            CertificateHelper.createSignedCertificateKeyStore(
+                    CLIENT_HOST_ADDRESS,
+                    "Server CA",
+                    caKeyStorePath,
+                    clientKeyStorePath
             );
 
         }
